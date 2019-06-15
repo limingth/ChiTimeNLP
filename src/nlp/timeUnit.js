@@ -24,6 +24,7 @@ var TimeUnit = function () {
 
         this.timeExpression = expTime;
         this._tp = new TimePoint();
+        this._excursion = [0, 0, 0];
         if (timeBase) {
             this.timeBase = timeBase;
         } else {
@@ -409,6 +410,27 @@ var TimeUnit = function () {
          * 该方法识别时间表达式单元的秒字段
          */
 
+    }, {
+        key: 'normSetFuture',
+        value: function normSetFuture() {
+            let hour = this.timeExpression.match(/(\d*(?=小时)).*以?后/)
+            if (hour) { this._excursion[0] = parseInt(hour ? hour[1] : 0, 10); }
+
+            let minute = this.timeExpression.match(/(\d+(?=分钟?)).*以?后/)
+            if (minute) { this._excursion[1] = parseInt(minute ? minute[1] : 0, 10); }
+
+            let second = this.timeExpression.match(/(\d*(?=秒钟?)).*以?后/)
+            if (second) { this._excursion[2] = parseInt(second ? second[1] : 0, 10); }
+
+            if (this.timeExpression.match(/(分半|半分钟?)以?后/)) {
+                this._excursion[2] = 30
+            }
+            if (this.timeExpression.match(/(半小时)以?后/)) {
+                this._excursion[1] = 30
+            }
+        }
+
+        // 未来时间
     }, {
         key: 'normSetSecond',
         value: function normSetSecond() {
@@ -864,6 +886,7 @@ var TimeUnit = function () {
             this.normSetHour();
             this.normSetMinute();
             this.normSetSecond();
+            this.normSetFuture();
             this.normSetTotal();
             // this.modifyTimeBase();
 
@@ -877,19 +900,32 @@ var TimeUnit = function () {
             if (this._tp.tunit[0] > 0 && this._tp.tunit[0] < 10) {
                 _resultTmp[0] = '200' + this._tp.tunit[0].toString();
             }
+            if (this._tp.tunit[0] === -1) {
+                _resultTmp[0] = new Date().getFullYear()
+            }
             var flag = false;
             this._tp.tunit.forEach(function (t) {
                 if (t !== -1) {
                     flag = true;
                 }
             });
-            if (!flag) {
+            if (!flag && !this._excursion.length) {
                 return false;
             }
-            // 没有设置小时的默认早上8点
-            if (this._tp.tunit[3] === -1) {
-                this._tp.tunit[3] = 8;
+            // 没有设置月的默认当前
+            if (this._tp.tunit[1] === -1) {
+                this._tp.tunit[1] = new Date().getMonth();
             }
+            // 没有设置日的默认当前
+            if (this._tp.tunit[2] === -1) {
+                this._tp.tunit[2] = new Date().getDay();
+            }
+            // 没有设置小时的默认当前
+            if (this._tp.tunit[3] === -1) {
+                this._tp.tunit[3] = new Date().getHours();
+            }
+
+
             for (var i = 1; i < 6; i++) {
                 if (this._tp.tunit[i] !== -1) {
                     _resultTmp[i] = util.zeroPad(2, this._tp.tunit[i]);
@@ -897,7 +933,13 @@ var TimeUnit = function () {
                     _resultTmp[i] = '00';
                 }
             }
-            return _resultTmp[0] + '-' + _resultTmp[1] + '-' + _resultTmp[2] + ' ' + _resultTmp[3] + ':' + _resultTmp[4] + ':' + _resultTmp[5];
+            let timePlus = (this._excursion[0] * 3600 + this._excursion[1] * 60 + this._excursion[2]) * 1000
+            let time = _resultTmp[0] + '-' + _resultTmp[1] + '-' + _resultTmp[2] + ' ' + _resultTmp[3] + ':' + _resultTmp[4] + ':' + _resultTmp[5];
+            if (timePlus) {
+                return new Date(new Date().getTime() + timePlus)
+            } else {
+                return new Date(time)
+            }
         }
     }]);
 

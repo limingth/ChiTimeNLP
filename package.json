@@ -1,24 +1,52 @@
 {
-  "name": "chi-time-nlp",
-  "version": "1.0.4",
-  "description": "中文语句中的时间语义识别。即通过分析中文语句，识别出话语中提到的时间。参考https://github.com/shinyke/Time-NLP",
-  "main": "index.js",
-  "scripts": {
-    "test": "./test.js"
+  "_from": "chi-time-nlp-after",
+  "_id": "chi-time-nlp-after@1.0.5",
+  "_inBundle": false,
+  "_integrity": "sha1-E5+9Z3Icf5PGft2gKiiFkTooquQ=",
+  "_location": "/chi-time-nlp-after",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "chi-time-nlp-after",
+    "name": "chi-time-nlp-after",
+    "escapedName": "chi-time-nlp-after",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JohnnieFucker/ChiTimeNLP.git"
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npm.taobao.org/chi-time-nlp-after/download/chi-time-nlp-after-1.0.5.tgz",
+  "_shasum": "139fbd67721c7f93c67edda02a2885913a28aae4",
+  "_spec": "chi-time-nlp-after",
+  "_where": "/Users/liming/Github/wechaty-getting-started",
+  "author": {
+    "name": "Shine"
   },
+  "bugs": {
+    "url": "https://github.com/JohnnieFucker/ChiTimeNLP/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "中文语句中的时间语义识别。即通过分析中文语句，识别出话语中提到的时间。支持一天以内的相对时间",
+  "email": "crazysperm@gmail.com",
+  "homepage": "https://github.com/JohnnieFucker/ChiTimeNLP#readme",
   "keywords": [
     "time",
     "nlp"
   ],
-  "author": "Shine",
   "license": "MIT",
-  "email":"crazysperm@gmail.com",
-  "bugs": {
-    "url": "https://github.com/JohnnieFucker/ChiTimeNLP/issues"
+  "main": "index.js",
+  "name": "chi-time-nlp-after",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JohnnieFucker/ChiTimeNLP.git"
   },
-  "homepage": "https://github.com/JohnnieFucker/ChiTimeNLP#readme"
+  "scripts": {
+    "test": "./test.js"
+  },
+  "version": "1.0.5"
 }
